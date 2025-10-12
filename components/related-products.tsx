@@ -1,3 +1,4 @@
+import { getProduct } from "@/lib/product-service";
 import { ProductCard, type ProductCardData } from "./product-card";
 
 async function getRelatedProducts(
@@ -19,14 +20,9 @@ async function getRelatedProducts(
   return products.filter((p) => p.id !== currentId).slice(0, 4);
 }
 
-export async function RelatedProducts({
-  category,
-  currentId,
-}: {
-  category: string;
-  currentId: number;
-}) {
-  const products = await getRelatedProducts(category, currentId);
+export async function RelatedProducts({ id }: { id: Promise<string> }) {
+  const product = await getProduct(await id);
+  const products = await getRelatedProducts(product.category, product.id);
 
   if (products.length === 0) {
     return (
