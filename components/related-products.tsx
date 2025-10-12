@@ -1,24 +1,5 @@
-import { getProduct } from "@/lib/product-service";
-import { ProductCard, type ProductCardData } from "./product-card";
-
-async function getRelatedProducts(
-  category: string,
-  currentId: number
-): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  const res = await fetch(
-    `https://fakestoreapi.com/products/category/${category}`,
-    {
-      cache: "no-store",
-    }
-  );
-  if (!res.ok) throw new Error("Failed to fetch related products");
-  const products: ProductCardData[] = await res.json();
-
-  // Filter out current product and limit to 4
-  return products.filter((p) => p.id !== currentId).slice(0, 4);
-}
+import { getProduct, getRelatedProducts } from "@/lib/product-service";
+import { ProductCard } from "./product-card";
 
 export async function RelatedProducts({ id }: { id: Promise<string> }) {
   const product = await getProduct(await id);

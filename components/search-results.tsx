@@ -1,19 +1,5 @@
-import { ProductCard, type ProductCardData } from "./product-card";
-
-async function searchProducts(query: string): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  const res = await fetch("https://fakestoreapi.com/products", {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const products: ProductCardData[] = await res.json();
-
-  // Filter products by title match
-  return products.filter((product) =>
-    product.title.toLowerCase().includes(query.toLowerCase())
-  );
-}
+import { searchProducts } from "@/lib/product-service";
+import { ProductCard } from "./product-card";
 
 export async function SearchResults({ query }: { query: Promise<string> }) {
   const products = await searchProducts(await query);

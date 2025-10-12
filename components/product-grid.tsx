@@ -1,14 +1,5 @@
-import { ProductCard, type ProductCardData } from "./product-card";
-
-async function getProducts(): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  const res = await fetch("https://fakestoreapi.com/products?limit=8", {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
-}
+import { getProducts } from "@/lib/product-service";
+import { ProductCard } from "./product-card";
 
 export async function ProductGrid() {
   const products = await getProducts();
