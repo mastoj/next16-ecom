@@ -1,3 +1,4 @@
+"use cache";
 import { Suspense } from "react";
 import Image from "next/image";
 import { ProductDetails } from "@/components/product-details";
