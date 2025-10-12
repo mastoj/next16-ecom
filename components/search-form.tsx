@@ -16,7 +16,8 @@ export function SearchForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`;
+      //
     }
   };
 
