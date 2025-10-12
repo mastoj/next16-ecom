@@ -29,6 +29,7 @@ const ProductMainInfo = async (props: { id: Promise<string> }) => {
     </div>
   );
 };
+
 export default async function ProductPage({
   params,
 }: {
