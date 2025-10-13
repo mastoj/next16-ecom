@@ -12,6 +12,7 @@ export const generateStaticParams = async () => {
 const ProductMainInfo = async (props: { id: Promise<string> }) => {
   "use cache";
   const product = await getProduct(await props.id);
+  const timestamp = new Date().toTimeString();
 
   return (
     <div className="mb-12 grid gap-8 lg:grid-cols-2">
@@ -26,6 +27,9 @@ const ProductMainInfo = async (props: { id: Promise<string> }) => {
       </div>
 
       <ProductDetails product={product} />
+      <p className="mt-4 text-sm text-muted-foreground">
+        Fetched at: {timestamp}
+      </p>
     </div>
   );
 };

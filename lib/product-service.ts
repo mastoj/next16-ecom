@@ -14,6 +14,7 @@ export interface Product {
 }
 
 export async function getProduct(id: string): Promise<Product> {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
   if (!res.ok) throw new Error("Failed to fetch product");
   return res.json();
