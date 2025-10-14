@@ -14,7 +14,6 @@ type HomePageProps = {
 };
 
 export default async function HomePage({ params }: HomePageProps) {
-  "use cache";
   const code = await params.then((p) => p.code);
   const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
