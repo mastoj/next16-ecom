@@ -42,7 +42,6 @@ export default async function ProductPage({
 }: {
   params: Promise<{ id: string; code: string }>;
 }) {
-  "use cache";
   const code = await params.then((p) => p.code);
   const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
