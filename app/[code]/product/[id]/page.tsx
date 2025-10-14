@@ -37,17 +37,6 @@ const ProductMainInfo = async (props: { id: Promise<string> }) => {
   );
 };
 
-const CachedComponent = async ({
-  id,
-  simulateDelay,
-}: {
-  id: Promise<string>;
-  simulateDelay: boolean;
-}) => {
-  "use cache";
-  return <RelatedProducts id={id} simulateDelay={simulateDelay} />;
-};
-
 export default async function ProductPage({
   params,
 }: {
@@ -65,12 +54,6 @@ export default async function ProductPage({
         <h2 className="mb-6 text-2xl font-bold text-foreground">
           Related Products
         </h2>
-        <Suspense fallback={<RelatedProductsSkeleton />}>
-          <CachedComponent
-            id={params.then((p) => p.id)}
-            simulateDelay={simulateDelay}
-          />
-        </Suspense>
         <Suspense fallback={<RelatedProductsSkeleton />}>
           <RelatedProducts
             id={params.then((p) => p.id)}
