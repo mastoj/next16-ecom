@@ -13,8 +13,13 @@ export interface Product {
   };
 }
 
-export async function getProduct(id: string): Promise<Product> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+export async function getProduct(
+  id: string,
+  simulateDelay?: boolean
+): Promise<Product> {
+  if (simulateDelay) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
   if (!res.ok) throw new Error("Failed to fetch product");
   return res.json();
@@ -22,9 +27,12 @@ export async function getProduct(id: string): Promise<Product> {
 
 export async function getRelatedProducts(
   category: string,
-  currentId: number
+  currentId: number,
+  simulateDelay?: boolean
 ): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  if (simulateDelay) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
 
   const res = await fetch(
     `https://fakestoreapi.com/products/category/${category}`
@@ -36,8 +44,12 @@ export async function getRelatedProducts(
   return products.filter((p) => p.id !== currentId).slice(0, 4);
 }
 
-export async function getProducts(): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+export async function getProducts(
+  simulateDelay?: boolean
+): Promise<ProductCardData[]> {
+  if (simulateDelay) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
 
   const res = await fetch("https://fakestoreapi.com/products?limit=8");
   if (!res.ok) throw new Error("Failed to fetch products");
@@ -45,9 +57,12 @@ export async function getProducts(): Promise<ProductCardData[]> {
 }
 
 export async function searchProducts(
-  query: string
+  query: string,
+  simulateDelay?: boolean
 ): Promise<ProductCardData[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  if (simulateDelay) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
 
   const res = await fetch("https://fakestoreapi.com/products");
   if (!res.ok) throw new Error("Failed to fetch products");

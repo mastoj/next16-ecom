@@ -1,8 +1,14 @@
 import { searchProducts } from "@/lib/product-service";
 import { ProductCard } from "./product-card";
 
-export async function SearchResults({ query }: { query: Promise<string> }) {
-  const products = await searchProducts(await query);
+export async function SearchResults({
+  query,
+  simulateDelay,
+}: {
+  query: Promise<string>;
+  simulateDelay?: boolean;
+}) {
+  const products = await searchProducts(await query, simulateDelay);
 
   if (products.length === 0) {
     return (
