@@ -4,9 +4,12 @@ import { ProductDetails } from "@/components/product-details";
 import { RelatedProducts } from "@/components/related-products";
 import { RelatedProductsSkeleton } from "@/components/related-products-skeleton";
 import { getProduct } from "@/lib/product-service";
+import { generatePermutations } from "flags/next";
+import { flagSimulateDelay, precomputedFlags } from "@/lib/flags";
 
 export const generateStaticParams = async () => {
-  return [{ id: "1" }];
+  const codes = await generatePermutations(precomputedFlags);
+  return codes.slice(0, 1).map((code) => ({ code, id: "1" }));
 };
 
 const ProductMainInfo = async (props: { id: Promise<string> }) => {
@@ -37,8 +40,11 @@ const ProductMainInfo = async (props: { id: Promise<string> }) => {
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; code: string }>;
 }) {
+  "use cache";
+  const code = await params.then((p) => p.code);
+  const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
     <main className="container mx-auto px-4 py-8">
       {/* Static Product Details Shell */}
@@ -50,7 +56,10 @@ export default async function ProductPage({
           Related Products
         </h2>
         <Suspense fallback={<RelatedProductsSkeleton />}>
-          <RelatedProducts id={params.then((p) => p.id)} />
+          <RelatedProducts
+            id={params.then((p) => p.id)}
+            simulateDelay={simulateDelay}
+          />
         </Suspense>
       </section>
     </main>

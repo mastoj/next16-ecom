@@ -1,9 +1,19 @@
 import { getProduct, getRelatedProducts } from "@/lib/product-service";
 import { ProductCard } from "./product-card";
 
-export async function RelatedProducts({ id }: { id: Promise<string> }) {
-  const product = await getProduct(await id);
-  const products = await getRelatedProducts(product.category, product.id);
+export async function RelatedProducts({
+  id,
+  simulateDelay,
+}: {
+  id: Promise<string>;
+  simulateDelay: boolean;
+}) {
+  const product = await getProduct(await id, simulateDelay);
+  const products = await getRelatedProducts(
+    product.category,
+    product.id,
+    simulateDelay
+  );
 
   if (products.length === 0) {
     return (

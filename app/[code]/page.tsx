@@ -1,8 +1,22 @@
 import { Suspense } from "react";
 import { ProductGrid } from "@/components/product-grid";
 import { ProductGridSkeleton } from "@/components/product-grid-skeleton";
+import { flagSimulateDelay, precomputedFlags } from "@/lib/flags";
+import { generatePermutations } from "flags/next";
 
-export default function HomePage() {
+export const generateStaticParams = async () => {
+  const codes = await generatePermutations(precomputedFlags);
+  return codes.slice(0, 1).map((code) => ({ code }));
+};
+
+type HomePageProps = {
+  params: Promise<{ code: string }>;
+};
+
+export default async function HomePage({ params }: HomePageProps) {
+  "use cache";
+  const code = await params.then((p) => p.code);
+  const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
     <main className="container mx-auto px-4 py-8">
       {/* Static Hero Section */}
@@ -23,7 +37,7 @@ export default function HomePage() {
           Featured Products
         </h2>
         <Suspense fallback={<ProductGridSkeleton />}>
-          <ProductGrid />
+          <ProductGrid simulateDelay={simulateDelay} />
         </Suspense>
       </section>
     </main>
