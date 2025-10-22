@@ -10,6 +10,7 @@ import {
   Geist_Mono as V0_Font_Geist_Mono,
   Source_Serif_4 as V0_Font_Source_Serif_4,
 } from "next/font/google";
+import { VercelToolbar } from "@vercel/toolbar/next";
 
 // Initialize fonts
 const _geist = V0_Font_Geist({
@@ -37,11 +38,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const shouldInjectToolbar = process.env.NODE_ENV === "development";
+
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="min-h-screen bg-background">
         <Header />
         {children}
+        {shouldInjectToolbar && <VercelToolbar />}
       </body>
     </html>
   );
