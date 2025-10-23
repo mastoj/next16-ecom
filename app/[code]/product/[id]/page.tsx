@@ -9,14 +9,13 @@ import { flagSimulateDelay, precomputedFlags } from "@/lib/flags";
 import { notFound } from "next/navigation";
 
 export const generateStaticParams = async () => {
-  const codes = await generatePermutations(precomputedFlags);
-  return [{ code: codes[0], id: "66666" }];
+  return [{ code: "notFound", id: "notfound" }];
   //  return codes.slice(0, 1).map((code) => ({ code, id: "1" }));
 };
 
-const ProductMainInfo = async (props: { id: Promise<string> }) => {
+const ProductMainInfo = async (props: { id: string }) => {
   "use cache";
-  const product = await getProduct(await props.id);
+  const product = await getProduct(props.id);
   const timestamp = new Date().toTimeString();
 
   return (
@@ -44,16 +43,15 @@ export default async function ProductPage({
 }: {
   params: Promise<{ id: string; code: string }>;
 }) {
-  const code = await params.then((p) => p.code);
-  const id = await params.then((p) => p.id);
-  if (id === "66666") {
+  const { code, id } = await params;
+  if (id === "notfound") {
     notFound();
   }
   const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
     <main className="container mx-auto px-4 py-8">
       {/* Static Product Details Shell */}
-      <ProductMainInfo id={params.then((p) => p.id)} />
+      <ProductMainInfo id={id} />
 
       {/* Dynamic Related Products */}
       <section>
@@ -61,10 +59,7 @@ export default async function ProductPage({
           Related Products
         </h2>
         <Suspense fallback={<RelatedProductsSkeleton />}>
-          <RelatedProducts
-            id={params.then((p) => p.id)}
-            simulateDelay={simulateDelay}
-          />
+          <RelatedProducts id={id} simulateDelay={simulateDelay} />
         </Suspense>
       </section>
     </main>

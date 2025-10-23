@@ -5,10 +5,10 @@ export async function RelatedProducts({
   id,
   simulateDelay,
 }: {
-  id: Promise<string>;
+  id: string;
   simulateDelay: boolean;
 }) {
-  const product = await getProduct(await id, simulateDelay);
+  const product = await getProduct(id, simulateDelay);
   const products = await getRelatedProducts(
     product.category,
     product.id,
