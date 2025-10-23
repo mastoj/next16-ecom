@@ -6,10 +6,12 @@ import { RelatedProductsSkeleton } from "@/components/related-products-skeleton"
 import { getProduct } from "@/lib/product-service";
 import { generatePermutations } from "flags/next";
 import { flagSimulateDelay, precomputedFlags } from "@/lib/flags";
+import { notFound } from "next/navigation";
 
 export const generateStaticParams = async () => {
   const codes = await generatePermutations(precomputedFlags);
-  return codes.slice(0, 1).map((code) => ({ code, id: "1" }));
+  return [{ code: codes[0], id: "66666" }];
+  //  return codes.slice(0, 1).map((code) => ({ code, id: "1" }));
 };
 
 const ProductMainInfo = async (props: { id: Promise<string> }) => {
@@ -43,6 +45,10 @@ export default async function ProductPage({
   params: Promise<{ id: string; code: string }>;
 }) {
   const code = await params.then((p) => p.code);
+  const id = await params.then((p) => p.id);
+  if (id === "66666") {
+    notFound();
+  }
   const simulateDelay = await flagSimulateDelay(code, precomputedFlags);
   return (
     <main className="container mx-auto px-4 py-8">
