@@ -16,12 +16,18 @@ export interface Product {
 export async function getProduct(
   id: string,
   simulateDelay?: boolean
-): Promise<Product> {
+): Promise<Product | null> {
   if (simulateDelay) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
   }
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-  if (!res.ok) throw new Error("Failed to fetch product");
+  if (!res.ok) {
+    console.error("Failed to fetch product", {
+      statusText: res.statusText,
+      status: res.status,
+    });
+    return null;
+  }
   return res.json();
 }
 
@@ -37,7 +43,13 @@ export async function getRelatedProducts(
   const res = await fetch(
     `https://fakestoreapi.com/products/category/${category}`
   );
-  if (!res.ok) throw new Error("Failed to fetch related products");
+  if (!res.ok) {
+    console.error("Failed to fetch related products", {
+      statusText: res.statusText,
+      status: res.status,
+    });
+    return [];
+  }
   const products: ProductCardData[] = await res.json();
 
   // Filter out current product and limit to 4
@@ -53,7 +65,10 @@ export async function getProducts(
 
   const res = await fetch("https://fakestoreapi.com/products?limit=8");
   if (!res.ok) {
-    console.error("Failed to fetch products");
+    console.error("Failed to fetch products", {
+      statusText: res.statusText,
+      status: res.status,
+    });
     return [];
   }
   return res.json();
@@ -69,7 +84,10 @@ export async function searchProducts(
 
   const res = await fetch("https://fakestoreapi.com/products");
   if (!res.ok) {
-    console.error("Failed to search products");
+    console.error("Failed to search products", {
+      statusText: res.statusText,
+      status: res.status,
+    });
     return [];
   }
   const products: ProductCardData[] = await res.json();

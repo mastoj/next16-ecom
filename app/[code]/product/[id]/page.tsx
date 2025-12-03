@@ -21,6 +21,10 @@ const ProductMainInfo = async (props: { id: string }) => {
 
   cacheTag("product-" + props.id);
   cacheLife("minutes");
+
+  if (!product) {
+    notFound();
+  }
   return (
     <div className="mb-12 grid gap-8 lg:grid-cols-2">
       <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
