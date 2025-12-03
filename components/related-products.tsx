@@ -9,6 +9,9 @@ export async function RelatedProducts({
   simulateDelay: boolean;
 }) {
   const product = await getProduct(id, simulateDelay);
+  if (!product) {
+    return null;
+  }
   const products = await getRelatedProducts(
     product.category,
     product.id,
