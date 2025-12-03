@@ -25,6 +25,7 @@ export async function getProduct(
     console.error("Failed to fetch product", {
       statusText: res.statusText,
       status: res.status,
+      url: res.url,
     });
     return null;
   }
@@ -47,6 +48,7 @@ export async function getRelatedProducts(
     console.error("Failed to fetch related products", {
       statusText: res.statusText,
       status: res.status,
+      url: res.url,
     });
     return [];
   }
@@ -68,6 +70,7 @@ export async function getProducts(
     console.error("Failed to fetch products", {
       statusText: res.statusText,
       status: res.status,
+      url: res.url,
     });
     return [];
   }
