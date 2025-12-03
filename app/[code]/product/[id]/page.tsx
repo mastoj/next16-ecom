@@ -7,6 +7,7 @@ import { getProduct } from "@/lib/product-service";
 import { generatePermutations } from "flags/next";
 import { flagSimulateDelay, precomputedFlags } from "@/lib/flags";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 
 export const generateStaticParams = async () => {
   return [{ code: "notFound", id: "notfound" }];
@@ -18,6 +19,8 @@ const ProductMainInfo = async (props: { id: string }) => {
   const product = await getProduct(props.id);
   const timestamp = new Date().toTimeString();
 
+  cacheTag("product-" + props.id);
+  cacheLife("minutes");
   return (
     <div className="mb-12 grid gap-8 lg:grid-cols-2">
       <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">

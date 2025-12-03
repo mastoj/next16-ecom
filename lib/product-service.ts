@@ -52,7 +52,10 @@ export async function getProducts(
   }
 
   const res = await fetch("https://fakestoreapi.com/products?limit=8");
-  if (!res.ok) throw new Error("Failed to fetch products");
+  if (!res.ok) {
+    console.error("Failed to fetch products");
+    return [];
+  }
   return res.json();
 }
 
@@ -65,7 +68,10 @@ export async function searchProducts(
   }
 
   const res = await fetch("https://fakestoreapi.com/products");
-  if (!res.ok) throw new Error("Failed to fetch products");
+  if (!res.ok) {
+    console.error("Failed to search products");
+    return [];
+  }
   const products: ProductCardData[] = await res.json();
 
   // Filter products by title match
